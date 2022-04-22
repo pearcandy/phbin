@@ -12,7 +12,7 @@ Install
 
 .. code-block:: sh
 		
-    git clone  https://github.com/pearcandy/phbin
+    git clone  https://github.com/pearcandy/phbin.git
     cd phbin
     pip install .
 
