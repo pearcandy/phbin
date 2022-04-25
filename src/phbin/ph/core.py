@@ -23,6 +23,39 @@ import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
 
 
+def draw_pi(pi, mesh, save_to='pi.png', dpi=300):
+    mesh.histogram_from_vector(pi).plot()
+    plt.savefig(save_to, dpi=dpi)
+
+
+def make_pi(pds,
+            mesh_range=(-2, 3),
+            bins=32,
+            sigma=0.01,
+            weight=("atan", 0.01, 3),
+            save_to='desc.dill',
+            superlevel=True):
+
+    mesh_range = mesh_range
+    bins = bins
+    sigma = sigma
+    weight = weight
+    save_to = save_to
+
+    mesh = hc.PIVectorizerMesh(mesh_range,
+                               bins,
+                               sigma=sigma,
+                               weight=weight,
+                               superlevel=superlevel)
+
+    pdvects = np.vstack(
+        [mesh.vectorize(pds[i]) for i in tqdm(range(len(pds)))])
+
+    desc = pdvects / pdvects.max()
+
+    return {'pi': desc, 'mesh': mesh}
+
+
 def make_pd(np_img, mode='sublevel', dim=0):
     pds = []
 

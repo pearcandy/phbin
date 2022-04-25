@@ -14,5 +14,4 @@ import os, sys, shutil
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 from .ph.core import show_image, show_pixel_dist, binarization, write_image
-from .ph.core import make_pd, draw_pd
-#
+from .ph.core import make_pd, draw_pd, make_pi, draw_pi
