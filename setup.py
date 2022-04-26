@@ -21,7 +21,7 @@ def _requires_from_file(filename):
 
 setup(
     name="phbin",
-    version="0.0.1",
+    version="0.0.2",
     license="GNU lv3",
     description=
     "A simple tool of persistent homology analysis for binary images",

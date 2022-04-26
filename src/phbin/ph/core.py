@@ -56,22 +56,78 @@ def make_pi(pds,
     return {'pi': desc, 'mesh': mesh}
 
 
-def make_pd(np_img, mode='sublevel', dim=0):
-    pds = []
+def make_pd_pc_alpha(pointcloud, dim=0):
+    if type(pointcloud) is list:
+        pds = []
 
-    dirpath = './pds'
-    if os.path.exists(dirpath):
-        shutil.rmtree('./pds')
+        dirpath = './pds'
+        if os.path.exists(dirpath):
+            shutil.rmtree('./pds')
+        else:
+            pass
+        os.mkdir('./pds')
+
+        for i in tqdm(range(len(pointcloud))):
+            pd = hc.PDList.from_alpha_filtration(pointcloud[i],
+                                                 save_to='./pds/%s.pdgm' %
+                                                 str(i),
+                                                 save_boundary_map=True)
+            pds.append(pd.dth_diagram(dim))
     else:
-        pass
-    os.mkdir('./pds')
+        print('pointcloud must be given list type')
+        sys.exit(0)
 
-    for i in tqdm(range(len(np_img))):
-        pd = hc.PDList.from_bitmap_levelset(hc.distance_transform(np_img[i],
-                                                                  signed=True),
-                                            mode=mode,
-                                            save_to='./pds/%s.pdgm' % str(i))
-        pds.append(pd.dth_diagram(dim))
+    return pds
+
+
+def make_pd_pc_rips(pointcloud, maxdim=2, dim=0):
+    if type(pointcloud) is list:
+
+        pds = []
+
+        dirpath = './pds'
+        if os.path.exists(dirpath):
+            shutil.rmtree('./pds')
+        else:
+            pass
+        os.mkdir('./pds')
+
+        for i in tqdm(range(len(pointcloud))):
+            dmatrix = distance_matrix(pointcloud[i], pointcloud[i])
+            pd = hc.PDList.from_rips_filtration(dmatrix,
+                                                maxdim=maxdim,
+                                                save_to='./pds/%s.pdgm' %
+                                                str(i))
+            pds.append(pd.dth_diagram(dim))
+
+    else:
+        print('pointcloud must be given list type')
+        sys.exit(0)
+    return pds
+
+
+def make_pd(np_img, mode='sublevel', dim=0):
+    if type(np_img) is list:
+        pds = []
+
+        dirpath = './pds'
+        if os.path.exists(dirpath):
+            shutil.rmtree('./pds')
+        else:
+            pass
+        os.mkdir('./pds')
+
+        for i in tqdm(range(len(np_img))):
+            pd = hc.PDList.from_bitmap_levelset(
+                hc.distance_transform(np_img[i], signed=True),
+                mode=mode,
+                save_to='./pds/%s.pdgm' % str(i))
+            pds.append(pd.dth_diagram(dim))
+
+    else:
+        print('pointcloud must be given list type')
+        sys.exit(0)
+
     return pds
 
 
