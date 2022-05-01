@@ -1,0 +1,15 @@
+MANIFEST.in
+README.rst
+requirements.txt
+setup.py
+src/phbin/__doc__.py
+src/phbin/__init__.py
+src/phbin/__main__.py
+src/phbin.egg-info/PKG-INFO
+src/phbin.egg-info/SOURCES.txt
+src/phbin.egg-info/dependency_links.txt
+src/phbin.egg-info/not-zip-safe
+src/phbin.egg-info/requires.txt
+src/phbin.egg-info/top_level.txt
+src/phbin/ph/__init__.py
+src/phbin/ph/core.py

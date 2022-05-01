@@ -1,0 +1,11 @@
+numpy
+scipy
+PyQt5
+scikit-learn
+PuLP
+forwardable
+ripser
+homcloud
+opencv-python
+Augmentor
+dill

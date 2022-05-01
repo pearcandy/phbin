@@ -151,8 +151,10 @@ def show_pixel_dist(img_file):
 
 def binarization(img_file, th=128):
     img = cv2.imread(img_file, 0)
+
     binary_img = np.array(img) > th
     binary_img = binary_img.astype(np.int) * 255
+
     return binary_img
 
 
