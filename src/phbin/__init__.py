@@ -16,3 +16,4 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 from .ph.core import show_image, show_pixel_dist, binarization, write_image
 from .ph.core import make_pd, draw_pd, make_pi, draw_pi
 from .ph.core import make_pd_pc_alpha, make_pd_pc_rips
+from .ph.core import make_phtrees

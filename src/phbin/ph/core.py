@@ -131,6 +131,31 @@ def make_pd(np_img, mode='sublevel', dim=0):
     return pds
 
 
+def make_phtrees(np_img, mode='sublevel', dim=0):
+    if type(np_img) is list:
+        phtrees = []
+
+        dirpath = './pds'
+        if os.path.exists(dirpath):
+            shutil.rmtree('./pds')
+        else:
+            pass
+        os.mkdir('./pds')
+
+        for i in tqdm(range(len(np_img))):
+            pd = hc.BitmapPHTrees.for_bitmap_levelset(
+                hc.distance_transform(np_img[i], signed=True),
+                mode=mode,
+                save_to='./pds/%s.pdgm' % str(i))
+            phtrees.append(pd.bitmap_phtrees(dim))
+
+    else:
+        print('pointcloud must be given list type')
+        sys.exit(0)
+
+    return phtrees
+
+
 def show_image(img_file):
     img = cv2.imread(img_file, 0)
     plt.imshow(img, cmap='gray')
