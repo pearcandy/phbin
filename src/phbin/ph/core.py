@@ -22,6 +22,9 @@ import dill, json
 import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
 
+def reverse_map(np_img):
+
+
 
 def draw_pi(pi, mesh, save_to='pi.png', dpi=300):
     mesh.histogram_from_vector(pi).plot()
