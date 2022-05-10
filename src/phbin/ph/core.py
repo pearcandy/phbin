@@ -22,8 +22,37 @@ import dill, json
 import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
 
-def reverse_map(np_img):
 
+def pd_filter(pd, phtree, area):
+    pairs_in_mask = area.filter_pairs(pd.pairs())
+    pairs_list = []
+    for i in range(len(pairs_in_mask)):
+        pairs_list.append(
+            (pairs_in_mask[i].birth_time(), pairs_in_mask[i].death_time()))
+
+    nodes = []
+    for i in range(len(pairs_list)):
+        temp_nodes = phtree.nearest_pair_node(pairs_list[i][0],
+                                              pairs_list[i][1])
+        nodes.append(temp_nodes)
+
+    return nodes
+
+
+def reverse_map(nodes,
+                img,
+                color=(255, 0, 0),
+                alpha=0.6,
+                birth_poition=(255, 0, 0),
+                marker_size=2,
+                save_to='reverse.png'):
+    mapping = hc.draw_volumes_on_2d_image(nodes,
+                                          img,
+                                          color=(255, 0, 0),
+                                          alpha=0.6,
+                                          birth_position=(255, 0, 0),
+                                          marker_size=2)
+    mapping.save(save_to)
 
 
 def draw_pi(pi, mesh, save_to='pi.png', dpi=300):
@@ -180,10 +209,15 @@ def show_pixel_dist(img_file):
 def binarization(img_file, th=128):
     img = cv2.imread(img_file, 0)
 
-    binary_img = np.array(img) > th
-    binary_img = binary_img.astype(np.int) * 255
+    binary_img = np.array(img) < th
+    #binary_img = binary_img.astype(np.int) * 255
 
     return binary_img
+
+
+def load_image(img_file):
+    img = cv2.imread(img_file, cv2.IMREAD_GRAYSCALE)
+    return img
 
 
 def write_image(img, save_to):
