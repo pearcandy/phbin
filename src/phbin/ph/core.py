@@ -32,9 +32,13 @@ def pd_filter(pd, phtree, area):
 
     nodes = []
     for i in range(len(pairs_list)):
-        temp_nodes = phtree.nearest_pair_node(pairs_list[i][0],
-                                              pairs_list[i][1])
-        nodes.append(temp_nodes)
+        nodes = nodes + phtree.pair_nodes_in_rectangle(
+            pairs_list[i][0], pairs_list[i][0], pairs_list[i][1],
+            pairs_list[i][1])
+        #temp_nodes = phtree.nearest_pair_node(pairs_list[i][0],
+        #                                      pairs_list[i][1])
+
+        #nodes.append(temp_nodes)
 
     return nodes
 
