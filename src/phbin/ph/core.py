@@ -284,3 +284,83 @@ def draw_pd(pd,
     histogram = hc.HistoSpec(x_range, x_bins, y_range, y_bins).pd_histogram(pd)
     histogram.plot(colorbar={"type": colorbar, "midpoint": 0}, title=title)
     plt.savefig(save_to, dpi=dpi)  #, bbox_inches='tight', pad_inches=0)
+
+
+def draw_pd_lifetime(pd,
+                     x_range=None,
+                     x_bins=None,
+                     y_range=None,
+                     y_bins=None,
+                     dpi=300,
+                     colorbar='log',
+                     title='title',
+                     save_to='pd_lifetime.png'):
+
+    #extract pairs
+    pairs = pd.pairs()
+    pairs_birth_list = []
+    pairs_death_list = []
+    for i in range(len(pairs)):
+        pairs_birth_list.append(float(pairs[i].birth))
+        pairs_death_list.append(float(pairs[i].death))
+    x_max = np.max(pairs_birth_list)
+    x_min = np.min(pairs_birth_list)
+    y_max = np.max(pairs_death_list)
+    y_min = np.min(pairs_death_list)
+
+    x2 = np.array(pairs_birth_list)
+    y2 = np.array(pairs_death_list)
+    z2 = y2 - x2
+
+    if x_range == None:
+        #x_range = (np.min([x_min, y_min]) * 1.5, np.max([x_max, y_max]) * 1.5)
+        #y_range = (np.min([x_min, y_min]) * 1.5, np.max([x_max, y_max]) * 1.5)
+        if abs(x_max - x_min) < 0.1:
+            if abs(y_max - y_min) < 0.1:
+                x_range = (x_min - 1.0, x_max + 1.0)
+                y_range = (y_min - 1.0, y_max + 1.0)
+            else:
+                x_range = (x_min - 1.0, x_max + 1.0)
+                y_range = (y_min, y_max)
+        elif abs(y_max - y_min) < 0.1:
+            x_range = (x_min - 0.5 * abs(x_min), x_max + 0.5 * abs(x_max))
+            y_range = (y_min - 1.0, y_max + 1.0)
+        else:
+            x_range = (x_min - 0.5 * abs(x_min), x_max + 0.5 * abs(x_max))
+            y_range = (y_min - 0.5 * abs(y_min), y_max + 0.5 * abs(y_max))
+    else:
+        x_range = x_range
+        y_range = y_range
+
+    if x_bins == None:
+        bins = np.max([x_max, y_max]) - np.min([x_min, y_min])
+        delta_bins = bins / 50
+        x_bins = int(bins / delta_bins)
+        y_bins = int(bins / delta_bins)
+    else:
+        x_bins = x_bins
+        y_bins = y_bins
+
+    from mpl_toolkits.mplot3d import Axes3D
+    fig = plt.figure(figsize=(8, 8))
+    ax = fig.add_subplot(111, projection='3d')
+    ax.set_xlabel('birth', size=14)
+    ax.set_ylabel('death', size=14)
+    ax.set_zlabel('lifetime', size=14)
+    cm = plt.cm.get_cmap('RdYlBu_r')
+    ax.scatter(x2, y2, z2, c=z2, cmap=cm, s=40)
+
+    max_range = np.array(
+        [x2.max() - x2.min(),
+         y2.max() - y2.min(),
+         z2.max() - z2.min()]).max() * 0.5
+
+    mid_x = (x2.max() + x2.min()) * 0.5
+    mid_y = (y2.max() + y2.min()) * 0.5
+    mid_z = (z2.max() + z2.min()) * 0.5
+    ax.set_xlim(mid_x - max_range, mid_x + max_range)
+    ax.set_ylim(mid_y - max_range, mid_y + max_range)
+    ax.set_zlim(mid_z - max_range, mid_z + max_range)
+
+    plt.show()
+    plt.savefig(save_to, dpi=dpi)  #, bbox_inches='tight', pad_inches=0)
