@@ -23,6 +23,27 @@ import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
 
 
+def pd_liftime_filter(pd, phtree, th=10):
+    pairs = pd.pairs()
+    pairs_birth_list = []
+    pairs_death_list = []
+    for i in range(len(pairs)):
+        pairs_birth_list.append(float(pairs[i].birth))
+        pairs_death_list.append(float(pairs[i].death))
+
+    x2 = np.array(pairs_birth_list)
+    y2 = np.array(pairs_death_list)
+    z2 = y2 - x2
+
+    long_lifitime_nodes = []
+    for i in range(len(z2)):
+        if z2[i] > th:
+            long_lifitime_nodes = long_lifitime_nodes + phtree.pair_nodes_in_rectangle(
+                x2[i], x2[i], y2[i], y2[i])
+
+    return long_lifitime_nodes
+
+
 def pd_filter(pd, phtree, area):
     pairs_in_mask = area.filter_pairs(pd.pairs())
     pairs_list = []
@@ -158,6 +179,31 @@ def make_pd(np_img, mode='sublevel', dim=0):
                 hc.distance_transform(np_img[i], signed=True),
                 mode=mode,
                 save_to='./pds/%s.pdgm' % str(i))
+            pds.append(pd.dth_diagram(dim))
+
+    else:
+        print('pointcloud must be given list type')
+        sys.exit(0)
+
+    return pds
+
+
+def make_pd_gray(np_img, mode='sublevel', dim=0):
+    if type(np_img) is list:
+        pds = []
+
+        dirpath = './pds'
+        if os.path.exists(dirpath):
+            shutil.rmtree('./pds')
+        else:
+            pass
+        os.mkdir('./pds')
+
+        for i in tqdm(range(len(np_img))):
+            pd = hc.PDList.from_bitmap_levelset(np_img[i],
+                                                mode=mode,
+                                                save_to='./pds/%s.pdgm' %
+                                                str(i))
             pds.append(pd.dth_diagram(dim))
 
     else:

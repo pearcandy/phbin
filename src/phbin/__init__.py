@@ -18,4 +18,4 @@ from .ph.core import make_pd, draw_pd, make_pi, draw_pi
 from .ph.core import make_pd_pc_alpha, make_pd_pc_rips
 from .ph.core import make_phtrees
 from .ph.core import load_image, reverse_map, pd_filter
-from .ph.core import draw_pd_lifetime
+from .ph.core import draw_pd_lifetime, make_pd_gray, pd_liftime_filter
