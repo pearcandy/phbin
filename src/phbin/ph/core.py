@@ -23,6 +23,12 @@ import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
 
 
+def make_input_imgobj(img_file, th=128):
+    img = load_image(img_file)
+    bin_img = img < th
+    return img, bin_img
+
+
 def pd_liftime_filter(pd, phtree, th=10):
     pairs = pd.pairs()
     pairs_birth_list = []

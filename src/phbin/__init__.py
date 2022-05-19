@@ -1,5 +1,5 @@
 __copyright__ = '2022, pearcandy'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __lisence__ = 'GNU lv3'
 __author__ = 'Yasutaka Nishida'
 __author_email__ = 'y.nishi1980@gmail.com'
@@ -19,3 +19,4 @@ from .ph.core import make_pd_pc_alpha, make_pd_pc_rips
 from .ph.core import make_phtrees
 from .ph.core import load_image, reverse_map, pd_filter
 from .ph.core import draw_pd_lifetime, make_pd_gray, pd_liftime_filter
+from .ph.core import make_input_imgobj
