@@ -23,9 +23,12 @@ import matplotlib.pyplot as plt
 from scipy.spatial import distance_matrix
 
 
-def make_input_imgobj(img_file, th=128):
+def make_input_imgobj(img_file, th=128, focus_region=False):
     img = load_image(img_file)
-    bin_img = img < th
+    if focus_region:
+        bin_img = img > th
+    else:
+        bin_img = img < th
     return img, bin_img
 
 
